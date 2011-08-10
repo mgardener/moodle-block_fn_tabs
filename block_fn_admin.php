@@ -254,8 +254,8 @@ class block_fn_admin extends block_list {
 
             /// teacher tool section
             if ($this->config->showteachertools && $this->config->showteachertools == 1) {
-                if ($this->config->showadminmenuitems && $this->config->showadminmenuitems == 1) {
-                    $this->content->items[] = "------------------------------------------";
+                if ($this->config->showadminmenuitems && $this->config->showadminmenuitems == 1) {                   
+                    $this->content->items[] = "<div style='width:162px;'><hr /></div>";
                     $this->content->icons[] = "";
                 }
                 $this->content->items[] = '<div class="sectionheader"><strong>'. get_string('teachertools'
@@ -331,8 +331,8 @@ class block_fn_admin extends block_list {
             }
             $customcourse = file_exists($CFG->dirroot . '/course/format/' . $course->format . '/settings.php');
             if ($customcourse && has_capability('moodle/course:update', $context)) {
-                if ($this->config->showteachertools && $this->config->showteachertools == 1) {
-                    $this->content->items[] = "------------------------------------------";
+                if ($this->config->showteachertools && $this->config->showteachertools == 1) {                   
+                    $this->content->items[] = "<div style='width:162px;'><hr /></div>";
                     $this->content->icons[] = "";
                 }
                 $this->content->items[] = '<div class="sectionheader"><strong>' . get_string('controlcentre',
