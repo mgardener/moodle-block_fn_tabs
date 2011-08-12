@@ -1,5 +1,6 @@
 <?php 
 //$Id: block_fn_admin.php,v 1.4 2009/08/19 20:58:16 mchurch Exp $
+$string['enrolme'] = 'enrolme';
 $string['pluginname'] = 'FN Admin';
 $string['blocktitle'] = 'FN Admin';
 $string['cfgdisplaytitle'] = 'Display title';

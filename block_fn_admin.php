@@ -199,8 +199,8 @@ class block_fn_admin extends block_list {
                 /// Unenrol link
                 if (empty($course->metacourse) && ($course->id !== SITEID)) {
                     if (has_capability('moodle/course:update', $context, null, false)) {   // Are a guest now
-                        $this->content->items[]='<a href="'.$CFG->wwwroot.'/course/enrol.php?id='.$this->instance->pageid.'">
-                                                       '.get_string('enrolme', '', format_string($course->shortname)).'</a>';
+                        $this->content->items[]='<a href="'.$CFG->wwwroot.'/course/enrol.php?id='.$this->course->id.'">
+                                                       '.get_string('enrolme', 'block_fn_admin', format_string($course->shortname)).'</a>';
                         $this->content->icons[] = '<img src="' . $CFG->wwwroot . '/blocks/fn_admin/pix/user.gif"
                                                        height="16" width="16" alt="" class="icon">';
                     } else if (has_capability('moodle/course:update', $context, null, false) &&
