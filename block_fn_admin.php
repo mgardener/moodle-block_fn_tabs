@@ -338,7 +338,8 @@ class block_fn_admin extends block_list {
                 $this->content->items[] = '<div class="sectionheader"><strong>' . get_string('controlcentre',
                                                 'block_fn_admin') . '</strong></div>';
                 $this->content->icons[] = "";
-                $this->content->items[] = '<a href="#">' . get_string('settings') . '</a>';
+                $this->content->items[] =  '<a href="'.$CFG->wwwroot.'/course/format/'.$course->format.'/settings.php?id='.$course->id.'&extraonly=1">'.
+                                      get_string('coursesettings', 'block_fn_admin').'</a>';
                 $this->content->icons[] = '<img src="' . $CFG->wwwroot . '/blocks/fn_admin/pix/setting.gif" height="16" width="16" alt="">';
             }
         }
