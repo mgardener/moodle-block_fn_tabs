@@ -16,7 +16,7 @@ class block_fn_tabs extends block_list {
      * @return none
      */
     public function init() {
-        $this->title = get_string('pluginname', 'block_fn_tabs');
+        $this->title = get_string('blocktitle', 'block_fn_tabs');
     }
 /**
      * Constrols the block title based on instance configuration
@@ -55,6 +55,7 @@ class block_fn_tabs extends block_list {
         global $course,$CFG, $USER, $DB, $OUTPUT;
 
         /// Need the bigger course object.
+        
         $this->course = $course;
 
         if ($this->content !== null) {
@@ -94,7 +95,10 @@ class block_fn_tabs extends block_list {
         global $course, $USER, $CFG;
 
         /// Need the bigger course object.
-        $this->course = $course;                
+        $this->course = $course;
+        $course = $this->page->course;       
+        require_once($CFG->dirroot.'/course/lib.php');       
+        $completion = new completion_info($course);        
         $context = get_context_instance(CONTEXT_COURSE, $this->course->id);
         $isteacheredit = has_capability('moodle/course:update', $context);        
         $ismoving = ismoving($this->course->id);
@@ -112,6 +116,14 @@ class block_fn_tabs extends block_list {
                 $this->content->items[] =  '<a href="'.$CFG->wwwroot.'/course/format/'.$course->format.'/settings.php?id='.$course->id.'&extraonly=1">'.
                                       get_string('coursesettings', 'block_fn_tabs').'</a>';
                 $this->content->icons[] = '<img src="' . $CFG->wwwroot . '/blocks/fn_tabs/pix/setting.gif" height="16" width="16" alt="" STYLE="margin-right: 7px">';
+            }
+            if ($customcourse && !$completion->is_enabled()) {
+                $this->content->items[] = "<div style='width:156px;'><hr /></div>";
+                $this->content->icons[]='';
+            }
+            if ($customcourse && !$completion->is_enabled() && has_capability('moodle/course:update', $context)) {              
+                $this->content->items[] = get_string('atswarning', 'block_fn_tabs');
+                $this->content->icons[] = '<img src="' . $CFG->wwwroot . '/blocks/fn_tabs/pix/warning.gif" height="16" width="16" alt="" STYLE="margin-right: 7px">';
             }
         }
         return $this->content;
