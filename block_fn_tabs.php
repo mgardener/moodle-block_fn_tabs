@@ -8,7 +8,7 @@
  * @copyright 2011 Moodlefn
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class block_fn_admin extends block_list {
+class block_fn_tabs extends block_list {
 
     /**
      * Sets the block title
@@ -16,7 +16,7 @@ class block_fn_admin extends block_list {
      * @return none
      */
     public function init() {
-        $this->title = get_string('pluginname', 'block_fn_admin');
+        $this->title = get_string('pluginname', 'block_fn_tabs');
     }
 /**
      * Constrols the block title based on instance configuration
@@ -30,7 +30,7 @@ class block_fn_admin extends block_list {
         $this->course = $course;
 
         if (empty($this->config->title)) {
-            $this->title = get_string('pluginname', 'block_fn_admin');
+            $this->title = get_string('pluginname', 'block_fn_tabs');
         } else {
             $this->title = $this->config->title;
         }       
@@ -110,8 +110,8 @@ class block_fn_admin extends block_list {
             $customcourse = file_exists($CFG->dirroot . '/course/format/' . $course->format . '/settings.php');
             if ($customcourse && has_capability('moodle/course:update', $context)) {              
                 $this->content->items[] =  '<a href="'.$CFG->wwwroot.'/course/format/'.$course->format.'/settings.php?id='.$course->id.'&extraonly=1">'.
-                                      get_string('coursesettings', 'block_fn_admin').'</a>';
-                $this->content->icons[] = '<img src="' . $CFG->wwwroot . '/blocks/fn_admin/pix/setting.gif" height="16" width="16" alt="" STYLE="margin-right: 7px">';
+                                      get_string('coursesettings', 'block_fn_tabs').'</a>';
+                $this->content->icons[] = '<img src="' . $CFG->wwwroot . '/blocks/fn_tabs/pix/setting.gif" height="16" width="16" alt="" STYLE="margin-right: 7px">';
             }
         }
         return $this->content;
