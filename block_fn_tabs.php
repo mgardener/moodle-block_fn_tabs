@@ -26,8 +26,7 @@ class block_fn_tabs extends block_list {
     public function specialization() {
         global $course;
 
-        /// Need the bigger course object.
-        $this->course = $course;
+        /// Need the bigger course object.       
 
         if (empty($this->config->title)) {
             $this->title = get_string('pluginname', 'block_fn_tabs');
@@ -83,8 +82,7 @@ class block_fn_tabs extends block_list {
      */
     public function applicable_formats() {
         // Default case: the block can be used in all course types
-        return array('all' => false,
-            'course-*' => true);
+        return (array('course-view-fntabs' => true));
     }
 
     /**
@@ -94,22 +92,15 @@ class block_fn_tabs extends block_list {
     private function get_fnblock_content() {      
         global $course, $USER, $CFG;
 
-        /// Need the bigger course object.
-        $this->course = $course;
+        /// Need the bigger course object.       
         $course = $this->page->course;       
         require_once($CFG->dirroot.'/course/lib.php');       
         $completion = new completion_info($course);        
-        $context = get_context_instance(CONTEXT_COURSE, $this->course->id);
-        $isteacheredit = has_capability('moodle/course:update', $context);        
-        $ismoving = ismoving($this->course->id);
-
-        if ($ismoving) {
-            $strmovehere = get_string("movehere");
-            $strmovefull = strip_tags(get_string("movefull", "", "'$USER->activitycopyname'"));
-        }
+        $context = get_context_instance(CONTEXT_COURSE, $course->id);
+        $isteacheredit = has_capability('moodle/course:update', $context);       
 
         ///Course Teacher Menu:
-        if (($this->course->id != SITEID)) {
+        if (($this->page->course->id != SITEID)) {
            
             $customcourse = file_exists($CFG->dirroot . '/course/format/' . $course->format . '/settings.php');
             if ($customcourse && has_capability('moodle/course:update', $context)) {              
