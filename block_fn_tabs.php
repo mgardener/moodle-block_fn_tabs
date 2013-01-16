@@ -102,9 +102,9 @@ class block_fn_tabs extends block_list {
         ///Course Teacher Menu:
         if (($this->page->course->id != SITEID)) {
            
-            $customcourse = file_exists($CFG->dirroot . '/course/format/' . $course->format . '/settings.php');
+            $customcourse = file_exists($CFG->dirroot . '/course/format/' . $course->format . '/tabsettings.php');
             if ($customcourse && has_capability('moodle/course:update', $context)) {              
-                $this->content->items[] =  '<a href="'.$CFG->wwwroot.'/course/format/'.$course->format.'/settings.php?id='.$course->id.'&extraonly=1">'.
+                $this->content->items[] =  '<a href="'.$CFG->wwwroot.'/course/format/'.$course->format.'/tabsettings.php?id='.$course->id.'&extraonly=1">'.
                                       get_string('coursesettings', 'block_fn_tabs').'</a>';
                 $this->content->icons[] = '<img src="' . $CFG->wwwroot . '/blocks/fn_tabs/pix/setting.gif" height="16" width="16" alt="" STYLE="margin-right: 7px">';
             }

@@ -1,6 +1,6 @@
 <?php 
 //$Id: block_fn_tabs.php,v 1.4 2009/08/19 20:58:16 mchurch Exp $
-$string['pluginname'] = 'FN Tabs-Course Format';
+$string['pluginname'] = 'FN-Tabs Course Format';
 $string['blocktitle'] = 'FN-Tabs Controller';
 $string['cfgdisplaytitle'] = 'Display title';
 $string['atswarning'] = '<p>Completion Tracking is not enabled at the site level.You must turn this feature on if you wish to use the Assignment Tracking system for this course. </p>';
