@@ -17,7 +17,7 @@
 
 
 $plugin->version = 2013031401;
-$plugin->requires = 2012120300.00; // 2.4 (Build: 20121203)
+$plugin->requires = 2012062500; // 2.3 
 $plugin->maturity = MATURITY_RC;
 $plugin->component = 'block_fn_tabs';
 $plugin->release = '2.4';
