@@ -15,5 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-$plugin->version  = 2010090503;
+
+$plugin->version = 2013031401;
 $plugin->requires = 2012120300.00; // 2.4 (Build: 20121203)
+$plugin->maturity = MATURITY_RC;
+$plugin->component = 'block_fn_tabs';
+$plugin->release = '2.4';
