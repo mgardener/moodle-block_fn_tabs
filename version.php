@@ -27,7 +27,8 @@
 
 
 $plugin->version = 2013031401;
-$plugin->requires = 2012062500; // 2.3 
+$plugin->requires = 2012120300; // Moodle 2.4 (2012120300) 
 $plugin->maturity = MATURITY_RC;
 $plugin->component = 'block_fn_tabs';
 $plugin->release = '2.4';
+$plugin->dependencies = array('format_fntabs' => 2013032202);
