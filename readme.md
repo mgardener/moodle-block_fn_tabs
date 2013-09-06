@@ -11,4 +11,5 @@ Locate the plugin manual here for more information about this plugin: http://moo
 - Support and Feedback: www.moodlefn.knet.ca 
 - List all MoodleFN Plugins: https://moodle.org/plugins/browse.php?list=contributor&id=13267
 
-* This block is required for FN Tabs Course format version 2.4 but not for version 2.5. 
+
+** This block is required for FN Tabs Course format version 2.4 but not for version 2.5. 
