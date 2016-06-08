@@ -331,7 +331,7 @@ class format_ned_tabs_renderer extends format_section_renderer_base {
 
         $locationoftrackingicons = format_ned_tabs_get_setting($course->id, 'locationoftrackingicons');
         $activitytrackingbackground = format_ned_tabs_get_setting($course->id, 'activitytrackingbackground');
-        
+
         $indentclasses = 'mod-indent';
         if (!empty($mod->indent)) {
             $indentclasses .= ' mod-indent-'.$mod->indent;
@@ -664,7 +664,7 @@ class format_ned_tabs_renderer extends format_section_renderer_base {
             // Normally we have have right, then left but this does not
             // make sense when modactionmenu is disabled.
             $moveright = null;
-            $_actions = array();
+            $tempactions = array();
             foreach ($actions as $key => $value) {
                 if ($key === 'moveright') {
 
@@ -674,18 +674,18 @@ class format_ned_tabs_renderer extends format_section_renderer_base {
 
                     // This assumes that the order was moveright, moveleft.
                     // If we have a moveright, then we should place it immediately after the current value.
-                    $_actions[$key] = $value;
-                    $_actions['moveright'] = $moveright;
+                    $tempactions[$key] = $value;
+                    $tempactions['moveright'] = $moveright;
 
                     // Clear the value to prevent it being used multiple times.
                     $moveright = null;
                 } else {
 
-                    $_actions[$key] = $value;
+                    $tempactions[$key] = $value;
                 }
             }
-            $actions = $_actions;
-            unset($_actions);
+            $actions = $tempactions;
+            unset($tempactions);
         }
         foreach ($actions as $action) {
             if ($action instanceof action_menu_link) {
@@ -780,7 +780,7 @@ class format_ned_tabs_renderer extends format_section_renderer_base {
             }
         }
 
-        if(isset($activitiesstatusarray['modules'][$mod->id]) && $usenedicons) {
+        if (isset($activitiesstatusarray['modules'][$mod->id]) && $usenedicons) {
             if ($activitiesstatusarray['modules'][$mod->id] == 'waitingforgrade') {
                 $completionicon = 'submitted';
             } else if ($activitiesstatusarray['modules'][$mod->id] == 'saved') {
@@ -804,10 +804,7 @@ class format_ned_tabs_renderer extends format_section_renderer_base {
                     array('class' => 'autocompletion'));
             } else if ($completion == COMPLETION_TRACKING_MANUAL) {
                 $imgtitle = get_string('completion-title-' . $completionicon, 'completion', $formattedname);
-                $newstate =
-                    $completiondata->completionstate == COMPLETION_COMPLETE
-                        ? COMPLETION_INCOMPLETE
-                        : COMPLETION_COMPLETE;
+                $newstate = $completiondata->completionstate == COMPLETION_COMPLETE ? COMPLETION_INCOMPLETE : COMPLETION_COMPLETE;
                 // In manual mode the icon is a toggle form...
 
                 // If this completion state is used by the
@@ -872,8 +869,8 @@ class format_ned_tabs_renderer extends format_section_renderer_base {
     public function course_section_cm_availability(cm_info $mod, $displayoptions = array()) {
         global $CFG;
         if (!$mod->uservisible) {
-            // this is a student who is not allowed to see the module but might be allowed
-            // to see availability info (i.e. "Available from ...")
+            // This is a student who is not allowed to see the module but might be allowed
+            // to see availability info (i.e. "Available from ...").
             if (!empty($mod->availableinfo)) {
                 $formattedinfo = \core_availability\info::format_info(
                     $mod->availableinfo, $mod->get_course());
@@ -881,8 +878,8 @@ class format_ned_tabs_renderer extends format_section_renderer_base {
             }
             return $output;
         }
-        // this is a teacher who is allowed to see module but still should see the
-        // information that module is not available to all/some students
+        // This is a teacher who is allowed to see module but still should see the
+        // information that module is not available to all/some students.
         $modcontext = context_module::instance($mod->id);
         $canviewhidden = has_capability('moodle/course:viewhiddenactivities', $modcontext);
         if ($canviewhidden && !empty($CFG->enableavailability)) {
@@ -960,7 +957,7 @@ class format_ned_tabs_renderer extends format_section_renderer_base {
         $inactivecolour = $DB->get_field('format_ned_tabs_config', 'value',
             array('courseid' => $course->id, 'variable' => 'inactivecolour')
         );
-        
+
         $tabcontent = format_ned_tabs_get_setting($course->id, 'tabcontent');
         $completiontracking = format_ned_tabs_get_setting($course->id, 'completiontracking');
         $tabwidth = format_ned_tabs_get_setting($course->id, 'tabwidth');
@@ -993,7 +990,6 @@ class format_ned_tabs_renderer extends format_section_renderer_base {
             color: #$inactivelinkcolour;
             background-color: #$inactivecolour;
         }
-       
         .fnweeklynavnorm a {
           color: #$activelinkcolour;
         }
@@ -1048,8 +1044,7 @@ class format_ned_tabs_renderer extends format_section_renderer_base {
 
         $tdselectedclass = array();
 
-        $currentweek = ($timenow > $course->startdate) ?
-            (int) ((($timenow - $course->startdate) / $weekofseconds) + 1) : 0;
+        $currentweek = ($timenow > $course->startdate) ? (int) ((($timenow - $course->startdate) / $weekofseconds) + 1) : 0;
 
         $currentweek = min($currentweek, $course->numsections);
 
@@ -1140,18 +1135,17 @@ class format_ned_tabs_renderer extends format_section_renderer_base {
                     && $completioninfo->is_enabled()
                     && $completiontracking) {
                     $actbar .= '<span class="custom info">
-                            <ul>                        
+                            <ul>
                                 <li class="not-attp"><img src="' . $CFG->wwwroot . '/course/format/' .
-                        $course->format . '/pix/completion-auto-n.gif" /> ' . $notattemptd . '</li>                        
+                        $course->format . '/pix/completion-auto-n.gif" /> ' . $notattemptd . '</li>
                                 <li class="grade-wait"><img src="' . $CFG->wwwroot . '/course/format/' .
-                        $course->format . '/pix/unmarked.gif" /> ' . $waitforgrade . '</li>                       
+                        $course->format . '/pix/unmarked.gif" /> ' . $waitforgrade . '</li>
                                 <li class="complete"><img src="' . $CFG->wwwroot . '/course/format/' .
-                        $course->format . '/pix/completed.gif" /> ' . $compl . '</li>                        
+                        $course->format . '/pix/completed.gif" /> ' . $compl . '</li>
                                 <li class="in-complete"><img src="' . $CFG->wwwroot . '/course/format/' .
-                        $course->format . '/pix/incomplete.gif" /> ' . $incompl . '</li>                        
+                        $course->format . '/pix/incomplete.gif" /> ' . $incompl . '</li>
                                 <li class="saved"><img src="' . $CFG->wwwroot . '/course/format/' .
                         $course->format . '/pix/saved.gif" /> ' . $svd . '</li>
-                        
                             </ul>
                             <img class="arrows" src="' . $CFG->wwwroot . '/course/format/' .
                         $course->format . '/pix/t-arrow-grey.gif" alt="Information" height="20" width="24" />
@@ -1178,8 +1172,6 @@ class format_ned_tabs_renderer extends format_section_renderer_base {
             $settingicon = '<a href="' . $CFG->wwwroot . '/course/format/' . $course->format .
                 '/tabsettings.php?id='.$course->id.'" ><img style="margin: 3px 1px 1px 5px;" src="'.
                 $OUTPUT->pix_url('t/edit').'" width="16" /></a>';
-
-
         }
         $actbar .= '<td width="1" align="center" height="25">'.$settingicon.'</td>';
         $actbar .= '</tr>';

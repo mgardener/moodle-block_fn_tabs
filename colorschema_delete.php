@@ -33,7 +33,7 @@ require_login(null, false);
 $coursecontext = context_course::instance($courseid);
 require_capability('moodle/course:update', $coursecontext);
 
-$PAGE->set_url('/course/format/ned_tabs/colorschema_delete.php', 
+$PAGE->set_url('/course/format/ned_tabs/colorschema_delete.php',
     array('delete' => $delete, 'courseid' => $courseid)
 );
 $PAGE->set_context(context_system::instance());
@@ -53,7 +53,7 @@ $PAGE->navbar->add(get_string('colorschemas', 'format_ned_tabs'),
 );
 $PAGE->navbar->add($title);
 
-if(!$toform = $DB->get_record('format_ned_tabs_color', array('id' => $delete, 'predefined' => 0))) {
+if (!$toform = $DB->get_record('format_ned_tabs_color', array('id' => $delete, 'predefined' => 0))) {
     redirect(new moodle_url('/course/format/ned_tabs/colorschema.php', array('courseid' => $courseid)));
 }
 

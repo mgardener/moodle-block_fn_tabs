@@ -53,7 +53,7 @@ class course_ned_tabs_edit_form extends moodleform {
         $mform->addElement('select', 'showtabs', get_string('tabs', 'format_ned_tabs'),
             $showhideoptions);
         $mform->setDefault('showtabs', 1);
-        
+
         $mform->addElement('select', 'completiontracking', get_string('completiontracking', 'format_ned_tabs'),
             $showhideoptions);
 
@@ -117,8 +117,7 @@ class course_ned_tabs_edit_form extends moodleform {
         $course->enddate = $course->startdate + ($weekofseconds * $course->numsections);
 
         // Calculate the current week based on today's date and the starting date of the course.
-        $currentweek = ($timenow > $course->startdate) ?
-            (int) ((($timenow - $course->startdate) / $weekofseconds) + 1) : 0;
+        $currentweek = ($timenow > $course->startdate) ? (int) ((($timenow - $course->startdate) / $weekofseconds) + 1) : 0;
 
         $currentweek = min($currentweek, $course->numsections);
         $topiclist = array();
@@ -139,8 +138,9 @@ class course_ned_tabs_edit_form extends moodleform {
 
         $saveasarray = array();
         $saveasarray[] = &$mform->createElement('select', 'colorschema', '', $colorschemaoptions);
-        $saveasarray[] = &$mform->createElement('button', 'managecolorschemas', get_string('managecolorschemas', 'format_ned_tabs'));
-
+        $saveasarray[] = &$mform->createElement('button', 'managecolorschemas',
+            get_string('managecolorschemas', 'format_ned_tabs')
+        );
         $mform->addGroup($saveasarray, 'saveasarr', get_string('loadcolorschema', 'format_ned_tabs'), array(' '), false);
 
         $mform->addElement('header', 'sections', get_string('sections', 'format_ned_tabs'));

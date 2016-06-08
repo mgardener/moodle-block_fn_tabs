@@ -1,5 +1,4 @@
 <?php
-
 require_once("HTML/QuickForm/text.php");
 
 /**
@@ -98,5 +97,3 @@ class MoodleQuickForm_tccolourpopup extends HTML_QuickForm_text {
     }
 
 }
-
-?>

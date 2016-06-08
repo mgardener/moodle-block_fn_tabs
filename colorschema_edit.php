@@ -35,7 +35,7 @@ $coursecontext = context_course::instance($courseid);
 require_capability('moodle/course:update', $coursecontext);
 
 if ($duplicate) {
-    if(!$schema = $DB->get_record('format_ned_tabs_color', array('id' => $duplicate, 'predefined' => 1))) {
+    if (!$schema = $DB->get_record('format_ned_tabs_color', array('id' => $duplicate, 'predefined' => 1))) {
         redirect(new moodle_url('/course/format/ned_tabs/colorschema.php', array('courseid' => $courseid)));
     }
     $schema->name = $schema->name.' [duplicate]';
@@ -78,7 +78,7 @@ $PAGE->set_heading($heading);
 $mform = new colorschema_form();
 
 if ($edit) {
-    if(!$toform = $DB->get_record('format_ned_tabs_color', array('id' => $edit, 'predefined' => 0))) {
+    if (!$toform = $DB->get_record('format_ned_tabs_color', array('id' => $edit, 'predefined' => 0))) {
         redirect(new moodle_url('/course/format/ned_tabs/colorschema.php', array('courseid' => $courseid)));
     }
 }

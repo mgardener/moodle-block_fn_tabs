@@ -912,7 +912,7 @@ function format_ned_tabs_course_get_cm_rename_action(cm_info $mod, $sr = null) {
     // AJAX edit title.
     if ($mod->has_view() && $hasmanageactivities && course_ajax_enabled($COURSE) &&
         (($mod->course == $COURSE->id) || ($mod->course == SITEID))) {
-        // we will not display link if we are on some other-course page (where we should not see this module anyway)
+        // We will not display link if we are on some other-course page (where we should not see this module anyway).
         return html_writer::span(
             html_writer::link(
                 new moodle_url($baseurl, array('update' => $mod->id)),

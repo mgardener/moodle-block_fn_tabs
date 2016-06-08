@@ -87,8 +87,6 @@ class colorschema_form extends moodleform {
 
         $mform->addElement('html', '</td></tr></table>');
 
-
-
         $mform->addElement('hidden', 'add');
         $mform->setType('add', PARAM_INT);
 
