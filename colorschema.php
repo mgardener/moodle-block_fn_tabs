@@ -46,12 +46,17 @@ $PAGE->set_url($thispageurl);
 $PAGE->set_pagelayout('course');
 $PAGE->set_context($coursecontext);
 
-
+$course = $DB->get_record('course', array('id' => $courseid));
 $name = get_string('colorschemas', 'format_ned_tabs');
 $title = get_string('colorschemas', 'format_ned_tabs');
 $heading = $SITE->fullname;
 
 // Breadcrumb.
+if ($course) {
+    $PAGE->navbar->add($course->shortname,
+        new moodle_url('/course/view.php', array('id' => $course->id))
+    );
+}
 $PAGE->navbar->add(get_string('pluginname', 'format_ned_tabs'));
 $PAGE->navbar->add(get_string('settings', 'format_ned_tabs'),
     new moodle_url('/course/format/ned_tabs/tabsettings.php', array('id' => $courseid))
@@ -59,7 +64,11 @@ $PAGE->navbar->add(get_string('settings', 'format_ned_tabs'),
 $PAGE->navbar->add($name);
 
 $PAGE->set_title($title);
-$PAGE->set_heading($heading);
+if ($course) {
+    $PAGE->set_heading($course->fullname);
+} else {
+    $PAGE->set_heading($heading);
+}
 
 $datacolumns = array(
     'id' => 'tc.id',
@@ -174,8 +183,8 @@ foreach ($tablerows as $tablerow) {
                 }
                 break;
             case 'action':
-                // Edit.
-                if (has_capability('moodle/course:update', $coursecontext) && $tablerow->predefined) {
+                // Duplicate.
+                if (has_capability('moodle/course:update', $coursecontext)) {
                     $actionurl = new moodle_url('/course/format/ned_tabs/colorschema_edit.php',
                         array('courseid' => $courseid, 'duplicate' => $tablerow->id )
                     );
@@ -310,9 +319,25 @@ if (has_capability('moodle/course:update', $coursecontext)) {
     $form = html_writer::tag('form', $submitbutton, array(
         'action' => $formurl->out(false),
         'method' => 'post',
+        'style' => 'float: left;',
         'autocomplete' => 'off'
     ));
-    echo html_writer::div($form, 'add-record-btn-wrapper', array('id' => 'add-record-btn'));
+
+    $formurlclose = new moodle_url('/course/format/ned_tabs/tabsettings.php',
+        array('id' => $courseid)
+    );
+    $submitbuttonclose  = html_writer::tag('button', get_string('close', 'format_ned_tabs'), array(
+        'class' => 'spark-close-record-btn',
+        'type' => 'submit',
+        'value' => 'submit',
+    ));
+    $formclose = html_writer::tag('form', $submitbuttonclose, array(
+        'action' => $formurlclose->out(false),
+        'method' => 'post',
+        'style' => 'float: left;',
+        'autocomplete' => 'off'
+    ));
+    echo html_writer::div($form.' '.$formclose, 'add-record-btn-wrapper', array('id' => 'add-record-btn'));
 }
 
 echo html_writer::end_div(); // Main wrapper.

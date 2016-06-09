@@ -71,16 +71,9 @@ class course_ned_tabs_edit_form extends moodleform {
 
         $tabcontentoptions = array(
             'usesectionnumbers' => get_string('usesectionnumbers', 'format_ned_tabs'),
-            'usesectiontitles' => get_string('usesectiontitles', 'format_ned_tabs'),
-            'usecustomtext' => get_string('usecustomtext', 'format_ned_tabs')
+            'usesectiontitles' => get_string('usesectiontitles', 'format_ned_tabs')
         );
         $mform->addElement('select', 'tabcontent', get_string('tabcontent', 'format_ned_tabs'), $tabcontentoptions);
-
-        $tabwidthoptions = array(
-            'equalspacing' => get_string('equalspacing', 'format_ned_tabs'),
-            'textwidth' => get_string('textwidth', 'format_ned_tabs'),
-        );
-        $mform->addElement('select', 'tabwidth', get_string('tabwidth', 'format_ned_tabs'), $tabwidthoptions);
 
         // For changing the number of tab to show before next link.
         $numberoftabs = array();

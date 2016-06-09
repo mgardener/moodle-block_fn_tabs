@@ -204,7 +204,10 @@ if ($editform->is_cancelled()) {
 $site = get_site();
 $streditcoursesettings = get_string("editcoursesettings");
 if (!empty($course)) {
-    $PAGE->navbar->add($streditcoursesettings);
+    // Breadcrumb.
+    $PAGE->navbar->add(get_string('pluginname', 'format_ned_tabs'));
+    $PAGE->navbar->add(get_string('settings', 'format_ned_tabs'));
+
     $title = $streditcoursesettings;
     $fullname = $course->fullname;
 } else {
