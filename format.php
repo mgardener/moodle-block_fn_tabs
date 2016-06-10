@@ -53,7 +53,12 @@ if (!isset($course->showsection0)) {
     $course->showsection0 = 0;
 }
 
+$section = optional_param('section', 0, PARAM_INT);
 $selectedweek = optional_param('selected_week', -1, PARAM_INT);
+
+if ($section) {
+    $selectedweek = $section;
+}
 
 $streditsummary = get_string('editsummary');
 $stradd = get_string('add');
@@ -266,7 +271,7 @@ if (empty($course->showonlysection0)) {
             $headerextraclass = 'fnoutlineheadingblockone';
         }
 
-        echo '<li id ="section-1" class ="section main clearfix" >';
+        echo '<li id ="section-'.$section.'" class ="section main clearfix" >';
 
         if (!empty($course->mainheading)) {
             if (($PAGE->user_is_editing()) || !$completion->is_enabled()) {
@@ -442,7 +447,7 @@ if (empty($course->showonlysection0)) {
                 }
 
                 echo '<ul class="ned_tabs">';
-                echo '<li id="section-1" class="section">';
+                echo '<li id="section-'.$section.'" class="section">';
                 echo '<div class="content">';
                 echo '<div class="summary">';
 

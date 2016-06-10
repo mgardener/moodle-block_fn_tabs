@@ -999,6 +999,12 @@ class format_ned_tabs_renderer extends format_section_renderer_base {
 
         list($tablow, $tabhigh, $week) = $this->get_week_info($course, $tabrange, $week);
 
+        $section = optional_param('section', 0, PARAM_INT);
+        if ($section > $tabhigh) {
+            $tabhigh = $section;
+            $week = $section;
+        }
+
         $timenow = time();
         $weekdate = $course->startdate;    // This should be 0:00 Monday of that week.
         $weekdate += 7200;                 // Add two hours to avoid possible DST problems.
@@ -1023,6 +1029,7 @@ class format_ned_tabs_renderer extends format_section_renderer_base {
         $isteacher = has_capability('moodle/course:update', $context);
         $iseditingteacher = has_capability('gradereport/grader:view', $context);
         $url = preg_replace('/(^.*)(&selected_week\=\d+)(.*)/', '$1$3', $FULLME);
+        $url = preg_replace('/(^.*)(&section\=\d+)(.*)/', '$1$3', $url);
 
         $actbar = '';
         $actbar .= '<table cellpadding="0" cellspacing="0"><tr><td>';

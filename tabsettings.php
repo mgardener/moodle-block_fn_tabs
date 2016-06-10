@@ -133,9 +133,6 @@ if ($editform->is_cancelled()) {
     $variable = 'tabcontent';
     format_ned_tabs_update_course_setting($variable, $data->$variable);
 
-    $variable = 'tabwidth';
-    format_ned_tabs_update_course_setting($variable, $data->$variable);
-
     $variable = 'completiontracking';
     format_ned_tabs_update_course_setting($variable, $data->$variable);
 
