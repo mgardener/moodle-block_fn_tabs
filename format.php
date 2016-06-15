@@ -317,7 +317,7 @@ if (empty($course->showonlysection0)) {
             background-color: #$inactivebgcolour;
         }
         </style>";
-
+        $class = '';
         if ($selectedweek > 0 && !$PAGE->user_is_editing()) {
             echo '<table class="topicsoutline" border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr><td valign=top class="fntopicsoutlinecontent fnsectionouter" width="100%">

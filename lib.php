@@ -742,9 +742,8 @@ function format_ned_tabs_get_activities_status($course, $section) {
                     // Grab assignment status.
                     $assignementstatus = format_ned_tabs_is_saved_or_submitted($module, $USER->id);
 
-                    if ($completionstate == 0) {  // If completion=0 then it may be saved or submitted.
-                        if (($module->module == '1')
-                            && ($module->modname == 'assignment' || $module->modname == 'assign')
+                    if ($completionstate == COMPLETION_INCOMPLETE) {  // If completion=0 then it may be saved or submitted.
+                        if (($module->modname == 'assignment' || $module->modname == 'assign')
                             && ($module->completion == '2')
                             && $assignementstatus) {
 
@@ -764,11 +763,17 @@ function format_ned_tabs_get_activities_status($course, $section) {
                                 $notattempted++;
                             }
                         } else {
-                            $notattempted++;
+                            if (($module->modname == 'quiz')
+                                && format_ned_tabs_quiz_waitingforgrade($module->instance, $USER->id)) {
+                                $sectionmodule[$module->id] = 'waitingforgrade';
+                                $waitingforgrade++;
+                            } else {
+                                $sectionmodule[$module->id] = 'notattemted';
+                                $notattempted++;
+                            }
                         }
-                    } else if ($completionstate == 1 || $completionstate == 2) {
-                        if (($module->module == 1)
-                            && ($module->modname == 'assignment' || $module->modname == 'assign')
+                    } else if ($completionstate == COMPLETION_COMPLETE || $completionstate == COMPLETION_COMPLETE_PASS) {
+                        if (($module->modname == 'assignment' || $module->modname == 'assign')
                             && ($module->completion == 2)
                             && $assignementstatus) {
                             if (isset($assignementstatus)) {
@@ -791,9 +796,8 @@ function format_ned_tabs_get_activities_status($course, $section) {
                             $complete++;
                         }
 
-                    } else if ($completionstate == 3) {
-                        if (($module->module == 1)
-                            && ($module->modname == 'assignment' || $module->modname == 'assign')
+                    } else if ($completionstate == COMPLETION_COMPLETE_FAIL) {
+                        if (($module->modname == 'assignment' || $module->modname == 'assign')
                             && ($module->completion == 2)
                             && $assignementstatus) {
                             if (isset($assignementstatus)) {
@@ -827,6 +831,36 @@ function format_ned_tabs_get_activities_status($course, $section) {
             return $array;
         }
     }
+}
+
+function format_ned_tabs_quiz_waitingforgrade ($quizid, $userid) {
+    global $DB;
+    $sql = "SELECT qs.id,
+                   q.qtype
+              FROM {quiz_slots} qs
+              JOIN {question} q
+                ON qs.questionid = q.id
+             WHERE qs.quizid = ?
+               AND q.qtype = 'essay'";
+
+    if ($DB->record_exists_sql($sql, array($quizid))) {
+        $sql = "SELECT qa.id,
+                       qa.sumgrades
+                  FROM {quiz_attempts} qa
+                 WHERE qa.quiz = ?
+                   AND qa.userid = ?
+                   AND qa.state = 'finished'
+              ORDER BY qa.attempt DESC";
+
+        if ($attempts = $DB->get_records_sql($sql, array($quizid, $userid))) {
+            $attempt = reset($attempts);
+            if (is_null($attempt->sumgrades)) {
+                return true;
+            }
+        }
+    }
+    return false;
+
 }
 
 function format_ned_tabs_update_course_setting($variable, $data) {
