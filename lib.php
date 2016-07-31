@@ -670,7 +670,8 @@ function format_ned_tabs_is_saved_or_submitted($mod, $userid) {
 
             $submissionisgraded = reset($submissionisgraded);
             if ($submissionisgraded->grade > -1) {
-                if ($submission->timemodified > $submissionisgraded->timemodified) {
+                if (($submission->timemodified > $submissionisgraded->timemodified)
+                    || ($submission->attemptnumber > $submissionisgraded->attemptnumber)) {
                     $graded = false;
                 } else {
                     $graded = true;
@@ -690,11 +691,7 @@ function format_ned_tabs_is_saved_or_submitted($mod, $userid) {
             }
         }
         if ($submission->status == 'reopened') {
-            if ($graded) {
-                return 'submitted';
-            } else {
-                return 'waitinggrade';
-            }
+            return 'submitted';
         }
         if ($submission->status == 'submitted') {
             if ($graded) {

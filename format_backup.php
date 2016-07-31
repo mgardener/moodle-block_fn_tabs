@@ -318,23 +318,18 @@ if (empty($course->showonlysection0)) {
         }
         </style>";
         $class = '';
-
-
-
-
-
-
-
-
-
-
-
-
-
-        echo html_writer::start_div('fntopicsoutlinecontent fnsectionouter');
-
         if ($selectedweek > 0 && !$PAGE->user_is_editing()) {
+            echo '<table class="topicsoutline" border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr><td valign=top class="fntopicsoutlinecontent fnsectionouter" width="100%">
+                            <div class="number-select">
+                <!-- Tabbed section container -->
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
+                        ';
             if ($course->numsections > 1) {
+                echo '
+                    <!-- Tabs -->
+                    <tr>
+                        <td width="100%" align="center">';
                 if ($showtabs) {
                     echo $renderer->print_weekly_activities_bar($course, $selectedweek, $tabrange);
                     if ($renderer->tdselectedclass[$selectedweek] == 'fnweeklynavdisabledselected') {
@@ -345,7 +340,23 @@ if (empty($course->showonlysection0)) {
                 } else {
                     $class = '';
                 }
+                echo '</td></tr>
+                    <!-- Tabs -->';
             }
+
+            echo '
+                    <!-- Selected Tab Content -->
+                    <tr>
+                        <!-- This cell holds the same colour as the selected tab. -->
+                        <td width="100%" class="' . $class . '">
+                            <!-- This table creates a selected colour box around the content -->
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td class="content-section">
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td>
+                        ';
         } else if ($course->numsections > 1) {
 
             echo '<table class="topicsoutline" border="0" cellpadding="8" cellspacing="0" width="100%">';
@@ -376,7 +387,7 @@ if (empty($course->showonlysection0)) {
         $section = 1;
     }
     while (($course->numsections > 0) && ($section <= $numsections)) {
-
+        echo '<table class="topicsoutline" border="0" cellpadding="0" cellspacing="0" width="100%">';
         if (!empty($sections[$section])) {
             $thissection = $sections[$section];
         } else {
@@ -410,16 +421,33 @@ if (empty($course->showonlysection0)) {
                 $colormain = "class=\"fntopicsoutlinecontent fntopicsoutlineinner\"";
             }
 
+            if ($selectedweek <= 0 || $PAGE->user_is_editing()) {
+                echo '<tr><td colspan="3" ' . $colorsides . ' align="center">';
+                echo "$headingprefix  $section";
+                echo '</td></tr>';
+                echo "<tr>";
+                echo '<td nowrap ' . $colorsides . ' valign="top" width="20">&nbsp;</td>';
+            } else {
+                echo "<tr>";
+            }
+
             if (!has_capability('moodle/course:viewhiddensections', $context) && !$thissection->visible) { // Hidden for students.
                 echo "<td valign=top align=center $colormain width=\"100%\">";
                 echo get_string("notavailable");
                 echo "</td>";
             } else {
-                echo html_writer::start_div('fnweeklynavselected');
-                echo html_writer::start_div('content-section');
-                echo html_writer::start_div('fntopicsoutlinecontent fntopicsoutlineinner');
+                echo "<td valign=top $colormain width=\"100%\">";
+
+                if (isset($renderer->course->expforumsec) && ($renderer->course->expforumsec == $thissection->section)) {
+                    echo '<table cellspacing="0" cellpadding="0" border="0" align="center" width="100%">'
+                        . '<tr><td>';
+                } else {
+                    echo '<table width="100%" cellspacing="0" cellpadding="0" border="0">'
+                        . '<tr><td align="left">';
+                }
+
                 echo '<ul class="ned_tabs">';
-                echo '<li id="section-' . $section . '" class="section">';
+                echo '<li id="section-'.$section.'" class="section">';
                 echo '<div class="content">';
                 echo '<div class="summary">';
 
@@ -451,11 +479,17 @@ if (empty($course->showonlysection0)) {
                 echo '</div>';
                 echo '</il>';
                 echo '</ul>';
-                html_writer::end_div();
-                html_writer::end_div();
-                html_writer::end_div();
+
+                echo '</td></tr></table>';
+
+                echo "</td>";
             }
-            html_writer::end_div(); //
+
+            if ($selectedweek <= 0 || $PAGE->user_is_editing()) {
+                echo '<td nowrap ' . $colorsides . ' valign="top" align="center" width="20">';
+                echo "<font size=1>";
+            }
+
 
             if ($PAGE->user_is_editing() && has_capability('moodle/course:update', context_course::instance($course->id))) {
                 if ($course->marker == $section) {  // Show the "light globe" on/off.
@@ -471,15 +505,15 @@ if (empty($course->showonlysection0)) {
                 }
 
                 if ($thissection->visible) {        // Show the hide/show eye.
-                    echo '<a href="view.php?id=' . $course->id . '&amp;hide=' . $section . '&amp;sesskey=' . sesskey() .
-                        '#section-' . $section . '" title="' . $strweekhide . '">' .
-                        '<img src="' . $OUTPUT->pix_url('i/hide') . '" class="iconsmall iconhide" alt="' .
-                        $strweekhide . '" /></a><br />';
+                    echo '<a href="view.php?id='.$course->id.'&amp;hide='.$section.'&amp;sesskey='.sesskey().
+                        '#section-'.$section.'" title="'.$strweekhide.'">'.
+                        '<img src="'.$OUTPUT->pix_url('i/hide') . '" class="iconsmall iconhide" alt="'.
+                        $strweekhide.'" /></a><br />';
                 } else {
-                    echo '<a href="view.php?id=' . $course->id . '&amp;show=' . $section . '&amp;sesskey=' . sesskey() .
-                        '#section-' . $section . '" title="' . $strweekshow . '">' .
-                        '<img src="' . $OUTPUT->pix_url('i/show') . '" class="iconsmall iconhide" alt="' .
-                        $strweekshow . '" /></a><br />';
+                    echo '<a href="view.php?id='.$course->id.'&amp;show='.$section.'&amp;sesskey='.sesskey().
+                        '#section-'.$section.'" title="'.$strweekshow.'">'.
+                        '<img src="'.$OUTPUT->pix_url('i/show') . '" class="iconsmall iconhide" alt="'.
+                        $strweekshow.'" /></a><br />';
                 }
 
                 if ($section > 1) {                       // Add a arrow to move section up.
@@ -498,12 +532,47 @@ if (empty($course->showonlysection0)) {
                         $strmovedown . '" /></a><br />';
                 }
             }
+
+            if ($selectedweek <= 0 || $PAGE->user_is_editing()) {
+                echo "</td>";
+            }
+            echo "</tr>";
+
+            if ($selectedweek <= 0 || $PAGE->user_is_editing()) {
+                echo '<tr><td colspan="3" ' . $colorsides . ' align="center">';
+                echo '&nbsp;';
+                echo '</td></tr>';
+                echo "<tr><td colspan=3><img src=\"../pix/spacer.gif\" width=1 height=1></td></tr>";
+            }
         }
+
+        echo '</table>';
         unset($sections[$section]);
         $section++;
     }
 
-
+    if ($selectedweek > 0 && !$PAGE->user_is_editing()) {
+        echo '
+                                    </td>
+                                </tr>
+                            </table>
+                            <!-- This table creates a selected colour box around the content -->
+                        </td>
+                        <!-- This cell holds the same colour as the selected tab. -->
+                    </tr>
+                    <!-- Selected Tab Content -->
+                </table>
+                        </td>
+                        <!-- This cell holds the same colour as the selected tab. -->
+                    </tr>
+                    <!-- Selected Tab Content -->
+                </table>
+                <!-- Tabbed section container -->
+                </div></td></tr></table>
+                <br><br>
+                <!-- Tabbed section container -->
+                        ';
+    }
 }
 
 echo "</li>\n";
