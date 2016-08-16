@@ -122,7 +122,6 @@ unset($sections[0]);
 
 if (!empty($course->showsection0) && ($thissection->summary or $thissection->sequence or $PAGE->user_is_editing())) {
 
-
     echo '<li id ="section-0" class ="section main clearfix" >';
     echo '<div class ="left side">&nbsp;</div>';
     echo '<div class ="right side" >&nbsp;</div>';
@@ -332,7 +331,6 @@ if (empty($course->showonlysection0)) {
 
 
         echo html_writer::start_div('fntopicsoutlinecontent fnsectionouter');
-
         if ($selectedweek > 0 && !$PAGE->user_is_editing()) {
             if ($course->numsections > 1) {
                 if ($showtabs) {
@@ -357,6 +355,7 @@ if (empty($course->showonlysection0)) {
             echo '</tr>';
             echo '</table>';
         }
+        echo html_writer::end_div();
 
         if (isset($course->topicheading) && !empty($course->topicheading)) {
             $headingprefix = $course->topicheading;
@@ -375,6 +374,14 @@ if (empty($course->showonlysection0)) {
     if ($section <= 0) {
         $section = 1;
     }
+
+    $showorphaned = format_ned_tabs_get_setting($course->id, 'showorphaned');
+    $totalnumofsections = $DB->count_records('course_sections', array('course' => $course->id));
+
+    if ($PAGE->user_is_editing() && $showorphaned && ($totalnumofsections > $numsections)) {
+        $numsections = $totalnumofsections-1;
+    }
+
     while (($course->numsections > 0) && ($section <= $numsections)) {
 
         if (!empty($sections[$section])) {
@@ -415,6 +422,12 @@ if (empty($course->showonlysection0)) {
                 echo get_string("notavailable");
                 echo "</td>";
             } else {
+
+                if ($course->numsections < $section) {
+                    echo html_writer::start_div('fntopicsoutlinecontent fnsectionouter orphaned');
+                } else {
+                    echo html_writer::start_div('fntopicsoutlinecontent fnsectionouter');
+                }
                 echo html_writer::start_div('fnweeklynavselected');
                 echo html_writer::start_div('content-section');
                 echo html_writer::start_div('fntopicsoutlinecontent fntopicsoutlineinner');
@@ -451,62 +464,66 @@ if (empty($course->showonlysection0)) {
                 echo '</div>';
                 echo '</il>';
                 echo '</ul>';
-                html_writer::end_div();
-                html_writer::end_div();
-                html_writer::end_div();
-            }
-            html_writer::end_div(); //
+                echo html_writer::end_div();
+                echo html_writer::end_div();
+                echo html_writer::end_div();
 
-            if ($PAGE->user_is_editing() && has_capability('moodle/course:update', context_course::instance($course->id))) {
-                if ($course->marker == $section) {  // Show the "light globe" on/off.
-                    echo '<a href="view.php?id=' . $course->id . '&amp;marker=0&amp;sesskey=' . sesskey() .
-                        '#section-' . $section . '" title="' . $strmarkedthistopic . '">' .
-                        '<img src="' . $OUTPUT->pix_url('i/marked') . '" alt="' . $strmarkedthistopic .
-                        '" class="icon"/></a><br />';
-                } else {
-                    echo '<a href="view.php?id=' . $course->id . '&amp;marker=' . $section . '&amp;sesskey=' .
-                        sesskey() . '#section-' . $section . '" title="' . $strmarkthistopic . '">' .
-                        '<img src="' . $OUTPUT->pix_url('i/marker') . '" alt="' . $strmarkthistopic .
-                        '" class="icon"/></a><br />';
+                if ($PAGE->user_is_editing() && has_capability('moodle/course:update', context_course::instance($course->id))) {
+                    echo html_writer::start_div('toolbox right side');
+                    if ($course->marker == $section) {  // Show the "light globe" on/off.
+                        echo '<a href="view.php?id=' . $course->id . '&amp;marker=0&amp;sesskey=' . sesskey() .
+                            '#section-' . $section . '" title="' . $strmarkedthistopic . '">' .
+                            '<img src="' . $OUTPUT->pix_url('i/marked') . '" alt="' . $strmarkedthistopic .
+                            '" class="icon"/></a><br />';
+                    } else {
+                        echo '<a href="view.php?id=' . $course->id . '&amp;marker=' . $section . '&amp;sesskey=' .
+                            sesskey() . '#section-' . $section . '" title="' . $strmarkthistopic . '">' .
+                            '<img src="' . $OUTPUT->pix_url('i/marker') . '" alt="' . $strmarkthistopic .
+                            '" class="icon"/></a><br />';
+                    }
+
+                    if ($thissection->visible) {        // Show the hide/show eye.
+                        echo '<a href="view.php?id=' . $course->id . '&amp;hide=' . $section . '&amp;sesskey=' . sesskey() .
+                            '#section-' . $section . '" title="' . $strweekhide . '">' .
+                            '<img src="' . $OUTPUT->pix_url('i/hide') . '" class="iconsmall iconhide" alt="' .
+                            $strweekhide . '" /></a><br />';
+                    } else {
+                        echo '<a href="view.php?id=' . $course->id . '&amp;show=' . $section . '&amp;sesskey=' . sesskey() .
+                            '#section-' . $section . '" title="' . $strweekshow . '">' .
+                            '<img src="' . $OUTPUT->pix_url('i/show') . '" class="iconsmall iconhide" alt="' .
+                            $strweekshow . '" /></a><br />';
+                    }
+
+                    if ($section > 1) {                       // Add a arrow to move section up.
+                        echo '<a href="view.php?id=' . $course->id . '&amp;random=' . rand(1, 10000) .
+                            '&amp;section=' . $section . '&amp;move=-1&amp;sesskey=' . sesskey() .
+                            '#section-' . ($section - 1) . '" title="' . $strmoveup . '">' .
+                            '<img src="' . $OUTPUT->pix_url('t/up') . '" class="iconsmall up" alt="' .
+                            $strmoveup . '" /></a><br />';
+                    }
+
+                    if ($section < $course->numsections) {    // Add a arrow to move section down.
+                        echo '<a href="view.php?id=' . $course->id . '&amp;random=' . rand(1, 10000) .
+                            '&amp;section=' . $section . '&amp;move=1&amp;sesskey=' . sesskey() .
+                            '#section-' . ($section + 1) . '" title="' . $strmovedown . '">' .
+                            '<img src="' . $OUTPUT->pix_url('t/down') . '" class="iconsmall down" alt="' .
+                            $strmovedown . '" /></a><br />';
+                    }
+                    echo html_writer::end_div();
                 }
 
-                if ($thissection->visible) {        // Show the hide/show eye.
-                    echo '<a href="view.php?id=' . $course->id . '&amp;hide=' . $section . '&amp;sesskey=' . sesskey() .
-                        '#section-' . $section . '" title="' . $strweekhide . '">' .
-                        '<img src="' . $OUTPUT->pix_url('i/hide') . '" class="iconsmall iconhide" alt="' .
-                        $strweekhide . '" /></a><br />';
-                } else {
-                    echo '<a href="view.php?id=' . $course->id . '&amp;show=' . $section . '&amp;sesskey=' . sesskey() .
-                        '#section-' . $section . '" title="' . $strweekshow . '">' .
-                        '<img src="' . $OUTPUT->pix_url('i/show') . '" class="iconsmall iconhide" alt="' .
-                        $strweekshow . '" /></a><br />';
-                }
-
-                if ($section > 1) {                       // Add a arrow to move section up.
-                    echo '<a href="view.php?id=' . $course->id . '&amp;random=' . rand(1, 10000) .
-                        '&amp;section=' . $section . '&amp;move=-1&amp;sesskey=' . sesskey() .
-                        '#section-' . ($section - 1) . '" title="' . $strmoveup . '">' .
-                        '<img src="' . $OUTPUT->pix_url('t/up') . '" class="iconsmall up" alt="' .
-                        $strmoveup . '" /></a><br />';
-                }
-
-                if ($section < $course->numsections) {    // Add a arrow to move section down.
-                    echo '<a href="view.php?id=' . $course->id . '&amp;random=' . rand(1, 10000) .
-                        '&amp;section=' . $section . '&amp;move=1&amp;sesskey=' . sesskey() .
-                        '#section-' . ($section + 1) . '" title="' . $strmovedown . '">' .
-                        '<img src="' . $OUTPUT->pix_url('t/down') . '" class="iconsmall down" alt="' .
-                        $strmovedown . '" /></a><br />';
-                }
+                echo html_writer::end_div();
             }
         }
         unset($sections[$section]);
         $section++;
     }
-
-
 }
 
-echo "</li>\n";
+//echo "</div>\n";
+if ($course->numsections > 0) {
+    echo "</li>\n";
+}
 echo "</ul>\n";
 
 // Include course format js module.

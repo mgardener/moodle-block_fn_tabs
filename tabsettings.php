@@ -69,6 +69,7 @@ $data->tabwidth = format_ned_tabs_get_setting($data->courseid, 'tabwidth');
 $data->completiontracking = format_ned_tabs_get_setting($data->courseid, 'completiontracking');
 $data->activitytrackingbackground = format_ned_tabs_get_setting($data->courseid, 'activitytrackingbackground');
 $data->locationoftrackingicons = format_ned_tabs_get_setting($data->courseid, 'locationoftrackingicons');
+$data->showorphaned = format_ned_tabs_get_setting($data->courseid, 'showorphaned');
 $data->topicheading = format_ned_tabs_get_setting($data->courseid, 'topicheading');
 $data->maxtabs = format_ned_tabs_get_setting($data->courseid, 'maxtabs');
 
@@ -140,6 +141,9 @@ if ($editform->is_cancelled()) {
     format_ned_tabs_update_course_setting($variable, $data->$variable);
 
     $variable = 'locationoftrackingicons';
+    format_ned_tabs_update_course_setting($variable, $data->$variable);
+
+    $variable = 'showorphaned';
     format_ned_tabs_update_course_setting($variable, $data->$variable);
 
     $variable = 'topicheading';

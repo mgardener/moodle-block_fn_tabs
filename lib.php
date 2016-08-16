@@ -886,6 +886,7 @@ function format_ned_tabs_get_setting($courseid, $name, $getdefaultvalue = false)
     $completiontracking = 1;
     $tabwidth = 'equalspacing';
     $locationoftrackingicons = 'nediconsleft';
+    $showorphaned = 0;
     $activitytrackingbackground = 1;
     $completiontracking = 1;
     $mainheading = '';

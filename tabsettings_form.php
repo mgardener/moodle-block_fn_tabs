@@ -169,6 +169,13 @@ class course_ned_tabs_edit_form extends moodleform {
             get_string('locationoftrackingicons', 'format_ned_tabs'), $locationoftrackingiconsoptions
         );
 
+        $choices['0'] = get_string("no");
+        $choices['1'] = get_string("yes");
+        $label = get_string('showorphaned', 'format_ned_tabs');
+        $mform->addElement('select', 'showorphaned', $label, $choices);
+        $mform->setDefault('showorphaned', $choices['0']);
+        unset($choices);
+
         $this->add_action_buttons();
     }
 
