@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    format_ned_tabs
+ * @package    format_fntabs
  * @copyright  Michael Gardener <mgardener@cissq.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,13 +26,13 @@ global $CFG;
 require_once($CFG->dirroot . '/course/lib.php');
 
 /**
- * format_ned_tabs related unit tests
+ * format_fntabs related unit tests
  *
- * @package    format_ned_tabs
+ * @package    format_fntabs
  * @copyright  2015 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class format_ned_tabs_testcase extends advanced_testcase {
+class format_fntabs_testcase extends advanced_testcase {
 
     public function test_update_course_numsections() {
         global $DB;
@@ -61,7 +61,7 @@ class format_ned_tabs_testcase extends advanced_testcase {
     }
 
     /**
-     * Tests for format_ned_tabs::get_section_name method with default section names.
+     * Tests for format_fntabs::get_section_name method with default section names.
      */
     public function test_get_section_name() {
         global $DB;
@@ -85,7 +85,7 @@ class format_ned_tabs_testcase extends advanced_testcase {
     }
 
     /**
-     * Tests for format_ned_tabs::get_section_name method with modified section names.
+     * Tests for format_fntabs::get_section_name method with modified section names.
      */
     public function test_get_section_name_customised() {
         global $DB;
@@ -117,7 +117,7 @@ class format_ned_tabs_testcase extends advanced_testcase {
     }
 
     /**
-     * Tests for format_ned_tabs::get_default_section_name.
+     * Tests for format_fntabs::get_default_section_name.
      */
     public function test_get_default_section_name() {
         global $DB;
@@ -136,10 +136,10 @@ class format_ned_tabs_testcase extends advanced_testcase {
         $courseformat = course_get_format($course);
         foreach ($coursesections as $section) {
             if ($section->section == 0) {
-                $sectionname = get_string('section0name', 'format_ned_tabs');
+                $sectionname = get_string('section0name', 'format_fntabs');
                 $this->assertEquals($sectionname, $courseformat->get_default_section_name($section));
             } else {
-                $sectionname = get_string('sectionname', 'format_ned_tabs') . ' ' . $section->section;
+                $sectionname = get_string('sectionname', 'format_fntabs') . ' ' . $section->section;
                 $this->assertEquals($sectionname, $courseformat->get_default_section_name($section));
             }
         }

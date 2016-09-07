@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="course/format/ned_tabs/db" VERSION="20160607" COMMENT="XMLDB file for Moodle course/format/ned_tabs"
+<XMLDB PATH="course/format/fntabs/db" VERSION="20160607" COMMENT="XMLDB file for Moodle course/format/fntabs"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="format_ned_tabs_color" COMMENT="format_ned_tabs_color table retrofitted from MySQL">
+    <TABLE NAME="format_fntabs_color" COMMENT="format_fntabs_color table retrofitted from MySQL">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="18" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" DEFAULT="" SEQUENCE="false"/>
@@ -28,7 +28,7 @@
         <INDEX NAME="mdl_formnedtabsconf_cou_ix" UNIQUE="false" FIELDS="courseid"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="format_ned_tabs_cm" COMMENT="format_ned_tabs_cm table retrofitted from MySQL">
+    <TABLE NAME="format_fntabs_cm" COMMENT="format_fntabs_cm table retrofitted from MySQL">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="18" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="courseid" TYPE="int" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
@@ -44,7 +44,7 @@
         <INDEX NAME="mdl_formnedtabscm_cmi_ix" UNIQUE="false" FIELDS="cmid"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="format_ned_tabs_config" COMMENT="format_ned_tabs_config table retrofitted from MySQL">
+    <TABLE NAME="format_fntabs_config" COMMENT="format_fntabs_config table retrofitted from MySQL">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="18" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="courseid" TYPE="int" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    format_ned_tabs
+ * @package    format_fntabs
  * @copyright  Michael Gardener <mgardener@cissq.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -40,15 +40,15 @@ require_login(null, false);
 $coursecontext = context_course::instance($courseid);
 require_capability('moodle/course:update', $coursecontext);
 
-$thispageurl = new moodle_url('/course/format/ned_tabs/colorschema.php', array('courseid' => $courseid));
+$thispageurl = new moodle_url('/course/format/fntabs/colorschema.php', array('courseid' => $courseid));
 
 $PAGE->set_url($thispageurl);
 $PAGE->set_pagelayout('course');
 $PAGE->set_context($coursecontext);
 
 $course = $DB->get_record('course', array('id' => $courseid));
-$name = get_string('colorschemas', 'format_ned_tabs');
-$title = get_string('colorschemas', 'format_ned_tabs');
+$name = get_string('colorschemas', 'format_fntabs');
+$title = get_string('colorschemas', 'format_fntabs');
 $heading = $SITE->fullname;
 
 // Breadcrumb.
@@ -57,9 +57,9 @@ if ($course) {
         new moodle_url('/course/view.php', array('id' => $course->id))
     );
 }
-$PAGE->navbar->add(get_string('pluginname', 'format_ned_tabs'));
-$PAGE->navbar->add(get_string('settings', 'format_ned_tabs'),
-    new moodle_url('/course/format/ned_tabs/tabsettings.php', array('id' => $courseid))
+$PAGE->navbar->add(get_string('pluginname', 'format_fntabs'));
+$PAGE->navbar->add(get_string('settings', 'format_fntabs'),
+    new moodle_url('/course/format/fntabs/tabsettings.php', array('id' => $courseid))
 );
 $PAGE->navbar->add($name);
 
@@ -91,7 +91,7 @@ if ($sort) {
 }
 
 // Count records for paging.
-$countsql = "SELECT COUNT(1) FROM {format_ned_tabs_color} tc WHERE 0 = 0 $where";
+$countsql = "SELECT COUNT(1) FROM {format_fntabs_color} tc WHERE 0 = 0 $where";
 $totalcount = $DB->count_records_sql($countsql);
 
 // Table columns.
@@ -105,13 +105,13 @@ $columns = array(
 );
 
 $sql = "SELECT tc.*
-          FROM {format_ned_tabs_color} tc
+          FROM {format_fntabs_color} tc
          WHERE 0=0
                $where
                $order";
 
 foreach ($columns as $column) {
-    $string[$column] = get_string($column, 'format_ned_tabs');
+    $string[$column] = get_string($column, 'format_fntabs');
     if ($sort != $column) {
         $columnicon = "";
         if ($column == "name") {
@@ -177,7 +177,7 @@ foreach ($tablerows as $tablerow) {
                 break;
             case 'predefined':
                 if ($tablerow->$column > 0) {
-                    $$varname = new html_table_cell(get_string('yes', 'format_ned_tabs'));
+                    $$varname = new html_table_cell(get_string('yes', 'format_fntabs'));
                 } else {
                     $$varname = new html_table_cell('-');
                 }
@@ -185,11 +185,11 @@ foreach ($tablerows as $tablerow) {
             case 'action':
                 // Duplicate.
                 if (has_capability('moodle/course:update', $coursecontext)) {
-                    $actionurl = new moodle_url('/course/format/ned_tabs/colorschema_edit.php',
+                    $actionurl = new moodle_url('/course/format/fntabs/colorschema_edit.php',
                         array('courseid' => $courseid, 'duplicate' => $tablerow->id )
                     );
                     $actioniconurl = $OUTPUT->pix_url('t/copy', '');
-                    $actionicontext = get_string('duplicate', 'format_ned_tabs');
+                    $actionicontext = get_string('duplicate', 'format_fntabs');
                     $actionicon = html_writer::img($actioniconurl, $actionicontext,
                         array('width' => '16', 'height' => '16')
                     );
@@ -199,11 +199,11 @@ foreach ($tablerows as $tablerow) {
                 }
                 // Edit.
                 if (has_capability('moodle/course:update', $coursecontext) && !$tablerow->predefined) {
-                    $actionurl = new moodle_url('/course/format/ned_tabs/colorschema_edit.php',
+                    $actionurl = new moodle_url('/course/format/fntabs/colorschema_edit.php',
                         array('courseid' => $courseid, 'edit' => $tablerow->id )
                     );
                     $actioniconurl = $OUTPUT->pix_url('t/edit', '');
-                    $actionicontext = get_string('edit', 'format_ned_tabs');
+                    $actionicontext = get_string('edit', 'format_fntabs');
                     $actionicon = html_writer::img($actioniconurl, $actionicontext, array('width' => '16', 'height' => '16'));
                     $actionlinks .= html_writer::link($actionurl->out(false), $actionicon, array(
                             'class' => 'actionlink',
@@ -211,11 +211,11 @@ foreach ($tablerows as $tablerow) {
                 }
                 // Delete.
                 if (has_capability('moodle/course:update', $coursecontext) && !$tablerow->predefined) {
-                    $actionurl = new moodle_url('/course/format/ned_tabs/colorschema_delete.php',
+                    $actionurl = new moodle_url('/course/format/fntabs/colorschema_delete.php',
                         array('courseid' => $courseid, 'delete' => $tablerow->id )
                     );
                     $actioniconurl = $OUTPUT->pix_url('t/delete', '');
-                    $actionicontext = get_string('delete', 'format_ned_tabs');
+                    $actionicontext = get_string('delete', 'format_fntabs');
                     $actionicon = html_writer::img($actioniconurl, $actionicontext, array('width' => '16', 'height' => '16'));
                     $actionlinks .= html_writer::link($actionurl->out(false), $actionicon, array(
                             'class' => 'actionlink',
@@ -243,7 +243,7 @@ echo html_writer::start_div('page-content-wrapper', array('id' => 'page-content'
 echo html_writer::tag('h1', $title, array('class' => 'page-title'));
 
 // The view options.
-$searchformurl = new moodle_url('/course/format/ned_tabs/colorschema.php');
+$searchformurl = new moodle_url('/course/format/fntabs/colorschema.php');
 
 $searchform = html_writer::tag('form',
     html_writer::empty_tag('input', array(
@@ -290,7 +290,7 @@ $searchform = html_writer::tag('form',
 );
 echo html_writer::div($searchform, 'search-form-wrapper', array('id' => 'search-form'));
 
-$pagingurl = new moodle_url('/course/format/ned_tabs/colorschema.php?',
+$pagingurl = new moodle_url('/course/format/fntabs/colorschema.php?',
     array(
         'perpage' => $perpage,
         'sort' => $sort,
@@ -308,10 +308,10 @@ echo $OUTPUT->render($pagingbar);
 
 // Add record form.
 if (has_capability('moodle/course:update', $coursecontext)) {
-    $formurl = new moodle_url('/course/format/ned_tabs/colorschema_edit.php',
+    $formurl = new moodle_url('/course/format/fntabs/colorschema_edit.php',
         array('courseid' => $courseid, 'add' => '1')
     );
-    $submitbutton  = html_writer::tag('button', get_string('add', 'format_ned_tabs'), array(
+    $submitbutton  = html_writer::tag('button', get_string('add', 'format_fntabs'), array(
         'class' => 'spark-add-record-btn',
         'type' => 'submit',
         'value' => 'submit',
@@ -323,10 +323,10 @@ if (has_capability('moodle/course:update', $coursecontext)) {
         'autocomplete' => 'off'
     ));
 
-    $formurlclose = new moodle_url('/course/format/ned_tabs/tabsettings.php',
+    $formurlclose = new moodle_url('/course/format/fntabs/tabsettings.php',
         array('id' => $courseid)
     );
-    $submitbuttonclose  = html_writer::tag('button', get_string('close', 'format_ned_tabs'), array(
+    $submitbuttonclose  = html_writer::tag('button', get_string('close', 'format_fntabs'), array(
         'class' => 'spark-close-record-btn',
         'type' => 'submit',
         'value' => 'submit',

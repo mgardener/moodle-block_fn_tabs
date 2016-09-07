@@ -15,16 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    format_ned_tabs
+ * @package    format_fntabs
  * @copyright  Michael Gardener <mgardener@cissq.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-function xmldb_format_ned_tabs_install() {
+function xmldb_format_fntabs_install() {
     global $DB;
 
     $rec = new stdClass();
-    $rec->name = 'Green Meadow';
+    $rec->name = 'Embassy Green';
     $rec->courseid = 1;
     $rec->bgcolour = '9DBB61';
     $rec->activecolour = 'DBE6C4';
@@ -36,14 +36,14 @@ function xmldb_format_ned_tabs_install() {
     $rec->inactivelinkcolour = '000000';
     $rec->predefined = 1;
     $rec->timecreated = time();
-    $DB->insert_record('format_ned_tabs_color', $rec);
+    $DB->insert_record('format_fntabs_color', $rec);
 
     $rec = new stdClass();
-    $rec->name = 'Grey on White';
+    $rec->name = 'Blues on Whyte';
     $rec->courseid = 1;
     $rec->bgcolour = 'FFFFFF';
     $rec->activecolour = 'E1E1E1';
-    $rec->selectedcolour = 'AAAAAA';
+    $rec->selectedcolour = '7CAAFE';
     $rec->inactivecolour = 'BDBBBB';
     $rec->inactivebgcolour = 'F5E49C';
     $rec->activelinkcolour = '929292';
@@ -51,7 +51,7 @@ function xmldb_format_ned_tabs_install() {
     $rec->inactivelinkcolour = '929292';
     $rec->predefined = 1;
     $rec->timecreated = time();
-    $DB->insert_record('format_ned_tabs_color', $rec);
+    $DB->insert_record('format_fntabs_color', $rec);
 
     return true;
 }

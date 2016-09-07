@@ -15,13 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    format_ned_tabs
+ * @package    format_fntabs
  * @copyright  Michael Gardener <mgardener@cissq.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 $string['pluginname'] = 'NED Tabs Format';
-$string['namened_tabs'] = 'NED Week';
+$string['namefntabs'] = 'NED Week';
 $string['currentsection'] = 'This topic';
 $string['editsection'] = 'Edit topic';
 $string['deletesection'] = 'Delete topic';
@@ -256,3 +256,4 @@ $string['successful'] = 'Successful';
 $string['deleteconfirmmsg'] = 'Record will be deleted permanently. Do you want to continue?';
 $string['close'] = 'Close';
 $string['showorphaned'] = 'Show orphaned section in edit mode';
+$string['blockinfo'] = 'Block info';

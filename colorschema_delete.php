@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    format_ned_tabs
+ * @package    format_fntabs
  * @copyright  Michael Gardener <mgardener@cissq.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -33,52 +33,52 @@ require_login(null, false);
 $coursecontext = context_course::instance($courseid);
 require_capability('moodle/course:update', $coursecontext);
 
-$PAGE->set_url('/course/format/ned_tabs/colorschema_delete.php',
+$PAGE->set_url('/course/format/fntabs/colorschema_delete.php',
     array('delete' => $delete, 'courseid' => $courseid)
 );
 $PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('course');
-$title = get_string('delete', 'format_ned_tabs');
+$title = get_string('delete', 'format_fntabs');
 $heading = $SITE->fullname;
 $PAGE->set_title($heading);
 $PAGE->set_heading($heading);
 
 // Breadcrumb.
-$PAGE->navbar->add(get_string('pluginname', 'format_ned_tabs'));
-$PAGE->navbar->add(get_string('settings', 'format_ned_tabs'),
-    new moodle_url('/course/format/ned_tabs/tabsettings.php', array('id' => $courseid))
+$PAGE->navbar->add(get_string('pluginname', 'format_fntabs'));
+$PAGE->navbar->add(get_string('settings', 'format_fntabs'),
+    new moodle_url('/course/format/fntabs/tabsettings.php', array('id' => $courseid))
 );
-$PAGE->navbar->add(get_string('colorschemas', 'format_ned_tabs'),
-    new moodle_url('/course/format/ned_tabs/colorschema.php', array('courseid' => $courseid))
+$PAGE->navbar->add(get_string('colorschemas', 'format_fntabs'),
+    new moodle_url('/course/format/fntabs/colorschema.php', array('courseid' => $courseid))
 );
 $PAGE->navbar->add($title);
 
-if (!$toform = $DB->get_record('format_ned_tabs_color', array('id' => $delete, 'predefined' => 0))) {
-    redirect(new moodle_url('/course/format/ned_tabs/colorschema.php', array('courseid' => $courseid)));
+if (!$toform = $DB->get_record('format_fntabs_color', array('id' => $delete, 'predefined' => 0))) {
+    redirect(new moodle_url('/course/format/fntabs/colorschema.php', array('courseid' => $courseid)));
 }
 
-$colorschema = $DB->get_record('format_ned_tabs_color', array('id' => $delete, 'predefined' => 0), '*', MUST_EXIST);
+$colorschema = $DB->get_record('format_fntabs_color', array('id' => $delete, 'predefined' => 0), '*', MUST_EXIST);
 
 if ($process) {
     require_sesskey();
-    $DB->delete_records('format_ned_tabs_color', array('id' => $delete, 'predefined' => 0));
+    $DB->delete_records('format_fntabs_color', array('id' => $delete, 'predefined' => 0));
 
-    redirect(new moodle_url('/course/format/ned_tabs/colorschema.php', array('courseid' => $courseid)),
-        get_string('successful', 'format_ned_tabs'), 1
+    redirect(new moodle_url('/course/format/fntabs/colorschema.php', array('courseid' => $courseid)),
+        get_string('successful', 'format_fntabs'), 1
     );
     die;
 } else {
     echo $OUTPUT->header();
     echo html_writer::tag('h1', $title, array('class' => 'page-title'));
     echo $OUTPUT->confirm('<div><strong>'.
-        get_string('colorschema', 'format_ned_tabs').': </strong>'.$colorschema->name.
+        get_string('colorschema', 'format_fntabs').': </strong>'.$colorschema->name.
         '<br><br>'.
         '</div>'.
-        get_string('deleteconfirmmsg', 'format_ned_tabs').'<br><br>',
-        new moodle_url('/course/format/ned_tabs/colorschema_delete.php',
+        get_string('deleteconfirmmsg', 'format_fntabs').'<br><br>',
+        new moodle_url('/course/format/fntabs/colorschema_delete.php',
             array('courseid' => $courseid, 'delete' => $delete, 'process' => 1)
         ),
-        new moodle_url('/course/format/ned_tabs/colorschema.php', array('courseid' => $courseid))
+        new moodle_url('/course/format/fntabs/colorschema.php', array('courseid' => $courseid))
     );
     echo $OUTPUT->footer();
 }

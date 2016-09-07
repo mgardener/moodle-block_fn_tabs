@@ -1,4 +1,4 @@
-@format @format_ned_tabs
+@format @format_fntabs
 Feature: Sections can be edited and deleted in NED Tabs format
   In order to rearrange my course contents
   As a teacher

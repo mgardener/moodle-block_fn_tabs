@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    format_ned_tabs
+ * @package    format_fntabs
  * @copyright  Michael Gardener <mgardener@cissq.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -45,9 +45,9 @@ if (($marker >= 0) && has_capability('moodle/course:setcurrentsection', $context
 $course = course_get_format($course)->get_course();
 course_create_sections_if_missing($course, range(0, $course->numsections));
 
-$renderer = $PAGE->get_renderer('format_ned_tabs');
+$renderer = $PAGE->get_renderer('format_fntabs');
 
-$showtabs = format_ned_tabs_get_setting($course->id, 'showtabs');
+$showtabs = format_fntabs_get_setting($course->id, 'showtabs');
 
 if (!isset($course->showsection0)) {
     $course->showsection0 = 0;
@@ -63,15 +63,15 @@ if ($section) {
 $streditsummary = get_string('editsummary');
 $stradd = get_string('add');
 $stractivities = get_string('activities');
-$strshowallweeks = get_string('showallweeks', 'format_ned_tabs');
+$strshowallweeks = get_string('showallweeks', 'format_fntabs');
 $strweek = get_string('week');
 $strgroups = get_string('groups');
 $strgroupmy = get_string('groupmy');
 $editing = $PAGE->user_is_editing();
 
 if ($editing) {
-    $strweekhide = get_string('hideweekfromothers', 'format_ned_tabs');
-    $strweekshow = get_string('showweekfromothers', 'format_ned_tabs');
+    $strweekhide = get_string('hideweekfromothers', 'format_fntabs');
+    $strweekshow = get_string('showweekfromothers', 'format_fntabs');
     $strmoveup = get_string('moveup');
     $strmovedown = get_string('movedown');
     $strmarkedthistopic = get_string("markedthistopic");
@@ -103,7 +103,7 @@ $isteacher = has_capability('moodle/grade:viewall', context_course::instance($co
 $course->selected_week = $selectedweek;
 
 // Note, an ordered list would confuse - "1" could be the clipboard or summary.
-echo "<ul class='ned_tabs'>\n";
+echo "<ul class='fntabs'>\n";
 
 // If currently moving a file then show the current clipboard.
 if (ismoving($course->id)) {
@@ -183,13 +183,13 @@ if (empty($course->showonlysection0)) {
 
     $completion = new completion_info($course);
 
-    $showoption = $DB->get_field('format_ned_tabs_config', 'value',
+    $showoption = $DB->get_field('format_fntabs_config', 'value',
         array('courseid' => $course->id, 'variable' => 'defaulttab')
     );
-    $defaulttabwhensetindb = $DB->get_field('format_ned_tabs_config', 'value',
+    $defaulttabwhensetindb = $DB->get_field('format_fntabs_config', 'value',
         array('courseid' => $course->id, 'variable' => 'defaulttabwhenset')
     );
-    $selectedweekindb = $DB->get_field('format_ned_tabs_config', 'value',
+    $selectedweekindb = $DB->get_field('format_fntabs_config', 'value',
         array('courseid' => $course->id, 'variable' => 'topictoshow')
     );
     // Calculate the current week based on today's date and the starting date of the course.
@@ -225,7 +225,7 @@ if (empty($course->showonlysection0)) {
                 }
                 if ($k <= $COURSE->numsections) {
                     if (!empty($sect)) {
-                        $activityinfoarr = format_ned_tabs_get_activities_status($course, $sect);
+                        $activityinfoarr = format_fntabs_get_activities_status($course, $sect);
                         if (($activityinfoarr['saved'] > 0)
                             || ($activityinfoarr['notattempted'] > 0)
                             || ($activityinfoarr['waitngforgrade'] > 0)) {
@@ -282,9 +282,9 @@ if (empty($course->showonlysection0)) {
             }
         }
 
-        $bgcolour = format_ned_tabs_get_setting($course->id, 'bgcolour');
-        $selectedlinkcolour = format_ned_tabs_get_setting($course->id, 'selectedlinkcolour');
-        $inactivebgcolour = format_ned_tabs_get_setting($course->id, 'inactivebgcolour');
+        $bgcolour = format_fntabs_get_setting($course->id, 'bgcolour');
+        $selectedlinkcolour = format_fntabs_get_setting($course->id, 'selectedlinkcolour');
+        $inactivebgcolour = format_fntabs_get_setting($course->id, 'inactivebgcolour');
 
         echo "
         <style>
@@ -375,7 +375,7 @@ if (empty($course->showonlysection0)) {
         $section = 1;
     }
 
-    $showorphaned = format_ned_tabs_get_setting($course->id, 'showorphaned');
+    $showorphaned = format_fntabs_get_setting($course->id, 'showorphaned');
     $totalnumofsections = $DB->count_records('course_sections', array('course' => $course->id));
 
     if ($PAGE->user_is_editing() && $showorphaned && ($totalnumofsections > $numsections)) {
@@ -431,7 +431,7 @@ if (empty($course->showonlysection0)) {
                 echo html_writer::start_div('fnweeklynavselected');
                 echo html_writer::start_div('content-section');
                 echo html_writer::start_div('fntopicsoutlinecontent fntopicsoutlineinner');
-                echo '<ul class="ned_tabs">';
+                echo '<ul class="fntabs">';
                 echo '<li id="section-' . $section . '" class="section">';
                 echo '<div class="content">';
                 echo '<div class="summary">';
@@ -527,4 +527,4 @@ if ($course->numsections > 0) {
 echo "</ul>\n";
 
 // Include course format js module.
-$PAGE->requires->js('/course/format/ned_tabs/format.js');
+$PAGE->requires->js('/course/format/fntabs/format.js');
